@@ -465,7 +465,12 @@ namespace AspNet.Identity.MongoDB {
 				throw new ArgumentNullException("user");
 			}
 
-			ICollection<IdentityUserLogin> logins = user.Logins;
+            if (user.Logins == null)
+            {
+                user.Logins = new List<IdentityUserLogin>();
+            }
+
+            ICollection<IdentityUserLogin> logins = user.Logins;
 			return await Task.FromResult(
 				logins.Select(iul => new UserLoginInfo(iul.LoginProvider, iul.ProviderKey))
 				.ToList()
