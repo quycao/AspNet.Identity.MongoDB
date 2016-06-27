@@ -50,6 +50,11 @@ Install-Package LionLab.AspNet.Identity.MongoDB
 4. In ~/App_Start/IdentityConfig.cs
     * Remove the namespace: Microsoft.AspNet.Identity.EntityFramework (you can make it to be comment by //)
     * Add the connection string name to the constructor of the UserStore. Or empty constructor will use DefaultConnection
+5. In ~/App_Start/Startup.Auth.cs
+	* Remove (or make comment) code snip: //app.CreatePerOwinContext(ApplicationDbContext.Create);
+6. In ~/Controllers/AccountController.cs
+	* Change Change Email to EmailAddress for all Application Init method
+		var user = new ApplicationUser { UserName = model.Email, EmailAddress = model.Email }
 
 ```C#
 public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
