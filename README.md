@@ -35,7 +35,7 @@ __22-11-2015__ - The repository was created to take the code to the latest versi
 These instructions assume you know how to set up MongoDB within an MVC application.
 
 1. Create a new ASP.NET MVC 5 project, choosing the Individual User Accounts authentication type.
-2. Remove the Entity Framework packages and replace with MongoDB Identity:
+2. Remove the Entity Framework packages (optional) and replace with MongoDB Identity:
 
 ```PowerShell
 Uninstall-Package Microsoft.AspNet.Identity.EntityFramework
@@ -44,22 +44,25 @@ Install-Package AspNetIdentity.MongoDB
 ```
     
 3. In ~/Models/IdentityModels.cs:
-    * Remove the namespace: Microsoft.AspNet.Identity.EntityFramework
+    * Remove the namespace: Microsoft.AspNet.Identity.EntityFramework (you can make it to be comment by //)
     * Add the namespace: AspNet.Identity.MongoDB
-	* Remove the ApplicationDbContext class completely.
-4. In ~/Controllers/AccountController.cs
-    * Remove the namespace: Microsoft.AspNet.Identity.EntityFramework
+	* Remove the ApplicationDbContext class completely. (you can make it to be comment by //)
+4. In ~/App_Start/IdentityConfig.cs
+    * Remove the namespace: Microsoft.AspNet.Identity.EntityFramework (you can make it to be comment by //)
     * Add the connection string name to the constructor of the UserStore. Or empty constructor will use DefaultConnection
 
 ```C#
-public AccountController()
+public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
 {
-    this.UserManager = new UserManager<ApplicationUser>(
-        new UserStore<ApplicationUser>("Mongo");
+	var manager = new ApplicationUserManager(new UserStore<ApplicationUser>("Mongo"));
+
+	// More code below is original
+	...
 }
 ```
 
 ```C#
+// Optional (no need)
 public Application_Start()
 {
         UserStore<ApplicationUser>.Initialize("Mongo");
