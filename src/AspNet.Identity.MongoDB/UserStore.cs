@@ -32,9 +32,11 @@ namespace AspNet.Identity.MongoDB {
 
 		public UserStore(String connectionNameOrUrl) {
 			this.database = MongoDBUtilities.GetDatabase(connectionNameOrUrl);
-			this.collection = database.GetCollection<TUser>(MongoDBUtilities.GetUserCollectionName());
-			this.roleCollection = database.GetCollection<IdentityRole>(MongoDBUtilities.GetRoleCollectionName());
-			this.disposed = false;
+            //this.collection = database.GetCollection<TUser>(MongoDBUtilities.GetUserCollectionName());
+            //this.roleCollection = database.GetCollection<IdentityRole>(MongoDBUtilities.GetRoleCollectionName());
+            this.collection = database.GetCollection<TUser>(typeof(TUser).Name.ToLower() + "s");
+            this.roleCollection = database.GetCollection<IdentityRole>(typeof(IdentityRole).Name.ToLower() + "s");
+            this.disposed = false;
 		}
 
 		public static void Initialize(String connectionNameOrUrl) {
